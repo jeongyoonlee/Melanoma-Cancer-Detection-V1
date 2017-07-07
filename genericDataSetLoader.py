@@ -82,7 +82,7 @@ class genericDataSetLoader:
     def __shuffle(self,list1,list2):
         list1_shuf = []
         list2_shuf = []
-        index_shuf = range(len(list1))
+        index_shuf = list(range(len(list1)))
         shuffle(index_shuf)
         for i in index_shuf:
             list1_shuf.append(list1[i])
@@ -167,7 +167,7 @@ class genericDataSetLoader:
             dataMap[classDirectory]["fileLabels"] = totalDataY
 
         #split into train-test
-        for key,value in dataMap.iteritems():
+        for key,value in dataMap.items():
             dataMap[key]["trainingDataX"],dataMap[key]["trainingDataY"],dataMap[key]["testingDataX"],dataMap[key]["testingDataY"]  = self.__trainTestSplit(dataMap[key]["filePaths"],dataMap[key]["fileLabels"],self.splitPercentage)
             self.trainingDataX.extend(dataMap[key]["trainingDataX"])
             self.trainingDataY.extend(dataMap[key]["trainingDataY"])
