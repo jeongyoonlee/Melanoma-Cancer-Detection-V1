@@ -48,7 +48,7 @@ class genericDataSetLoader:
         for clazz in classList:
             self.className2ClassIndxMap[clazz]=idx
             idx=idx+1
-        print self.className2ClassIndxMap
+        print(self.className2ClassIndxMap)
 
     def __getClassIndex(self,clazz):
         return self.className2ClassIndxMap[clazz]
@@ -68,7 +68,7 @@ class genericDataSetLoader:
         totalCnt = len(fileNames)
         for fName in fileNames:
             cnt = cnt+1
-            print "Loading Image:"+str(cnt)+"/"+str(totalCnt)
+            print("Loading Image:"+str(cnt)+"/"+str(totalCnt))
             imagesDataList.append(self.__loadAnImageData(fName))
         img_np = np.array(imagesDataList)
         return img_np
@@ -99,10 +99,10 @@ class genericDataSetLoader:
 
     def prepareDataSetFromImages(self):
         if(self.alreadySplitInTrainTest):
-            print "Data is already split into training,testing.Loading data..."
+            print("Data is already split into training,testing.Loading data...")
             self.__prepareDataSetFromAlreadySplitImages()
         else:
-            print "Loading data after splitting and shuffling..."
+            print("Loading data after splitting and shuffling...")
             self.__prepareDataSetFromImagesSplitShuffle()
 
     def __prepareDataSetFromAlreadySplitImages(self):
@@ -125,7 +125,7 @@ class genericDataSetLoader:
                 self.trainingDataX.append(self.basePath+"/training"+"/"+trainingDir+"/"+fName)
                 self.trainingDataY.append(self.__getClassIndex(trainingDir))
 
-        print "Shuffling the training dataset..."
+        print("Shuffling the training dataset...")
         self.trainingDataX,self.trainingDataY = self.__shuffle(self.trainingDataX,self.trainingDataY)
 
         for testingDir in testingDirs:
@@ -134,14 +134,14 @@ class genericDataSetLoader:
                 self.testingDataX.append(self.basePath+"/testing"+"/"+testingDir+"/"+fName)
                 self.testingDataY.append(self.__getClassIndex(testingDir))
 
-        print "Shuffling the testing dataset..."
+        print("Shuffling the testing dataset...")
         self.testingDataX,self.testingDataY = self.__shuffle(self.testingDataX,self.testingDataY)
 
         self.__postProcessData()
-        print self.testingDataX.shape
-        print self.testingDataY
-        print self.trainingDataX.shape
-        print self.trainingDataY
+        print(self.testingDataX.shape)
+        print(self.testingDataY)
+        print(self.trainingDataX.shape)
+        print(self.trainingDataY)
         self.__save()
 
     def __prepareDataSetFromImagesSplitShuffle(self):
@@ -174,7 +174,7 @@ class genericDataSetLoader:
             self.testingDataX.extend(dataMap[key]["testingDataX"])
             self.testingDataY.extend(dataMap[key]["testingDataY"])
 
-        print "Shuffling the dataset..."
+        print("Shuffling the dataset...")
         #shuffle the dataset for randomization
         self.trainingDataX,self.trainingDataY = self.__shuffle(self.trainingDataX,self.trainingDataY)
         self.testingDataX,self.testingDataY = self.__shuffle(self.testingDataX,self.testingDataY)
@@ -184,15 +184,15 @@ class genericDataSetLoader:
 
     def __postProcessData(self):
         #convert file paths into numpy array by reading the files
-        print "Reading the training image files..."+util.getCurrentTime()
+        print("Reading the training image files..."+util.getCurrentTime())
         self.trainingDataX = self.__loadImageDataParallely(self.trainingDataX)
-        print "Reading the training image files..."+util.getCurrentTime()
+        print("Reading the training image files..."+util.getCurrentTime())
         self.testingDataX = self.__loadImageDataParallely(self.testingDataX)
 
         #convert class lables into one hot encoded
-        print "Creating one hot encoded vectors for training labels..."+util.getCurrentTime()
+        print("Creating one hot encoded vectors for training labels..."+util.getCurrentTime())
         self.trainingDataY = self.__convertLabelsToOneHotVector(self.trainingDataY,self.numClasses)
-        print "Creating one hot encoded vectors for testing labels..."+util.getCurrentTime()
+        print("Creating one hot encoded vectors for testing labels..."+util.getCurrentTime())
         self.testingDataY = self.__convertLabelsToOneHotVector(self.testingDataY,self.numClasses)
 
 
@@ -203,14 +203,14 @@ class genericDataSetLoader:
         self.trainingDataY = preparedData["trainingY"]
         self.testingDataX = preparedData["testingX"]
         self.testingDataY = preparedData["testingY"]
-        print "Data loaded..."
-        print self.trainingDataX.shape
-        print self.trainingDataY.shape
-        print self.testingDataX.shape
-        print self.testingDataY.shape
+        print("Data loaded...")
+        print(self.trainingDataX.shape)
+        print(self.trainingDataY.shape)
+        print(self.testingDataX.shape)
+        print(self.testingDataY.shape)
 
     def __save(self):
-        print "Saving the processed data..."
+        print("Saving the processed data...")
         preparedData={}
         preparedData["trainingX"] = self.trainingDataX
         preparedData["trainingY"] = self.trainingDataY
@@ -219,7 +219,7 @@ class genericDataSetLoader:
         pklFile = open("preparedData.pkl", 'wb')
         pickle.dump(preparedData, pklFile)
         pklFile.close()
-        print "Data saved..."
+        print("Data saved...")
 
     def getNextTrainBatch(self,batchSize):
         trainDataX = dataManipulationUtil.selectRows(self.trainingDataX,self.trainingDataOffset,batchSize)
@@ -245,18 +245,18 @@ class genericDataSetLoader:
     """
     def analyzeDataDistribution(self):
         self.loadData()
-        print "Total Training Instances:"+str(self.trainingDataY.shape[0])
-        print "Total Testing Instances:"+str(self.testingDataY.shape[0])
+        print("Total Training Instances:"+str(self.trainingDataY.shape[0]))
+        print("Total Testing Instances:"+str(self.testingDataY.shape[0]))
         #print self.__convertOneHotVectorToLabels(self.trainingDataY)
         for classIndex in range(0,self.numClasses):
-            print "Distribution For Class:"+str(classIndex)
+            print("Distribution For Class:"+str(classIndex))
             trainDistribution = self.__convertOneHotVectorToLabels(self.trainingDataY)
             trainDistribution = np.count_nonzero(trainDistribution == classIndex)
             testDistribution = self.__convertOneHotVectorToLabels(self.testingDataY)
             testDistribution = np.count_nonzero(testDistribution == classIndex)
-            print "Instances In Training Data:"+str(trainDistribution)
-            print "Instances In Testing Data:"+str(testDistribution)
-        print "Done"
+            print("Instances In Training Data:"+str(trainDistribution))
+            print("Instances In Testing Data:"+str(testDistribution))
+        print("Done")
 
     def __convertOneHotVectorToLabels(self,oneHotVectors):
         labels = np.argmax(oneHotVectors==1,axis=1)

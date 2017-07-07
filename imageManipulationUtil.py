@@ -35,7 +35,7 @@ def testSquashing():
 def loadAndSquashImage(imagePath,sizeX,sizeY,totalImages):
     with counter_lock:
         counter.value += 1
-        print "Image Processed:"+str(counter.value)+"/"+str(totalImages)
+        print("Image Processed:"+str(counter.value)+"/"+str(totalImages))
     return squashImageArray(loadImageAsArray(imagePath),sizeX,sizeY)
 
 # def loadAndSquashImagesParallely(imagePaths,sizeX,sizeY):

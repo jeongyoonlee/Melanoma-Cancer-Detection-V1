@@ -25,7 +25,7 @@ def calculateTestAccuracy():
             break
         acc = convNetModel.test(testX,testY)
         batchAccuracies.append(acc)
-        print "Accuracy of test batch..."+str(acc)
+        print("Accuracy of test batch..."+str(acc))
     #testX = np.reshape(testX, (-1, imageSizeX, imageSizeY, numChannels))
     print('Accuracy:', sum(batchAccuracies) / float(len(batchAccuracies)))
 
@@ -68,12 +68,12 @@ def findWronglyLabelledExamples():
             else:
                 raise ValueError('Something is wrong here')
 
-        print "Error in class 1:"+str(class_1_wrong)
-        print "Error in class 2:"+str(class_2_wrong)
-        print "Correct labels in class 1:"+str(class_1_correct)
-        print "Correct labels in class 2:"+str(class_2_correct)
-        print "Class 1 Accuracy:" + str(float(class_1_correct)/(class_1_correct+class_1_wrong))
-        print "Class 2 Accuracy:" + str(float(class_2_correct)/(class_2_correct+class_2_wrong))
+        print("Error in class 1:"+str(class_1_wrong))
+        print("Error in class 2:"+str(class_2_wrong))
+        print("Correct labels in class 1:"+str(class_1_correct))
+        print("Correct labels in class 2:"+str(class_2_correct))
+        print("Class 1 Accuracy:" + str(float(class_1_correct)/(class_1_correct+class_1_wrong)))
+        print("Class 2 Accuracy:" + str(float(class_2_correct)/(class_2_correct+class_2_wrong)))
 
 convNetModel = convNetModel()
 saver = tf.train.Saver()
