@@ -28,13 +28,13 @@ class convNetModel:
 
 
     def _buildNetwork(self):
-	weights = {'W_conv1': tf.Variable(tf.random_normal([5, 5, numChannels, 32])),
+        weights = {'W_conv1': tf.Variable(tf.random_normal([5, 5, numChannels, 32])),
                    'W_conv2': tf.Variable(tf.random_normal([5, 5, 32, 64])),
                    'W_conv3': tf.Variable(tf.random_normal([5, 5, 64, 64])),
                    'W_fc': tf.Variable(tf.random_normal([imageSizeX/8 * imageSizeY/8 * 64, 1024])),
                    'out': tf.Variable(tf.random_normal([1024, n_classes]))}
 
-	biases = {'b_conv1': tf.Variable(tf.random_normal([32])),
+        biases = {'b_conv1': tf.Variable(tf.random_normal([32])),
                   'b_conv2': tf.Variable(tf.random_normal([64])),
                   'b_conv3': tf.Variable(tf.random_normal([64])),
                   'b_fc': tf.Variable(tf.random_normal([1024])),

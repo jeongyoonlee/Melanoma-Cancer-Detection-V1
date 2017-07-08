@@ -48,7 +48,7 @@ def restoreFromCheckPoint(sess,saver):
         start = global_step.eval() # get last global_step
         start = start+1
     else:
-        print "Starting fresh training..."
+        print("Starting fresh training...")
         start = global_step.eval() # get last global_step
     return start
 
@@ -58,7 +58,7 @@ def trainNeuralNetwork():
 
         #Restore the model from a previous checkpoint if any and get the epoch from which to continue training
         start = restoreFromCheckPoint(sess,saver)
-        print "Start from:"+str(start)+"/"+str(numEpochs)
+        print("Start from:"+str(start)+"/"+str(numEpochs))
 
         prev_epoch_loss = 0
         #Training epochs
@@ -78,10 +78,10 @@ def trainNeuralNetwork():
             if(prev_epoch_loss!=0):
                 loss_improvement = (prev_epoch_loss - epoch_loss)/prev_epoch_loss
                 if(loss_improvement<0.0):
-                    print "Loss did not improved more than the threshold...quitting now.."+str(loss_improvement)
+                    print("Loss did not improved more than the threshold...quitting now.."+str(loss_improvement))
                     #break
                 else:
-                    print "Loss has improved more than the threshold...saving this model.."+str(loss_improvement)
+                    print("Loss has improved more than the threshold...saving this model.."+str(loss_improvement))
 
             global_step.assign(epoch).eval()
             saver.save(sess,'model/data-all.chkp',global_step=global_step)
